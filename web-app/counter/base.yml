@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  base:
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - SQLALCHEMY_DATABASE_URL

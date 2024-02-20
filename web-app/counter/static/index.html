@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Counter</title>
+  <style type="text/css">
+    html {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      background: #030303;
+      color: #42eef4;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+    .counter-div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-weight: bold;
+      font-family: monospace;
+      text-shadow: 0 0 10px #42eef4;
+    }
+
+    #counter {
+      font-size: 12em;
+    }
+
+  </style>
+  <link rel="shortcut icon" href="#" />
+</head>
+<body>
+  <div class="counter-div">
+    <div id="counter"></div>
+  </div>
+  <script>
+    window.onload = function(){
+        const API_URL = '/add'
+        const counter = document.getElementById('counter')
+
+        fetch(API_URL)
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            } else {
+                error_message = "API request failed"
+                counter.textContent = error_message
+                throw new Error(error_message)
+            }
+        })
+        .then(data => {
+            counter.textContent = data.counter
+        })
+        .catch(error => {
+            console.error(error)
+        })
+    }
+  </script>
+</body>
+</html>

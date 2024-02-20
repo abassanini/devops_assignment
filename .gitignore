@@ -1,0 +1,13 @@
+.vault.pass
+__pycache__
+venv
+.venv
+debug*
+.vscode
+.DS_Store
+*db
+*pyc
+test
+.pass
+*backup
+.terraform

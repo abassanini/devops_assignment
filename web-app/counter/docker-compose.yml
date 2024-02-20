@@ -1,0 +1,74 @@
+version: '2'
+
+name:
+  counter
+
+services:
+  app:
+    image: counter:latest
+    ports:
+      - "8000"
+    scale: 2
+    environment:
+      - UVICORN_PORT=8000
+      - UVICORN_HOST=0.0.0.0
+    healthcheck:
+      test: python -c "import socket;exit(0) if 0 == socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect_ex(('127.0.0.1',8000)) else exit(2)"
+      interval: 5s
+      timeout: 10s
+    networks:
+      - my-net
+    depends_on:
+      db:
+        condition: service_healthy
+    extends:
+      file: base.yml
+      service: base
+    labels:
+      - traefik.http.routers.app.rule=Host(`counter.docker.localhost`)
+
+  db:
+    image: postgres:$POSTGRES_VERSION
+    restart: on-failure
+    volumes:
+      - db-postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - my-net
+    extends:
+      file: base.yml
+      service: base
+    stop_grace_period: 1m30s
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+  reverse-proxy:
+    image: traefik  
+    # Enables the web UI and tells Traefik to listen to docker
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - 80:80
+      - 8080:8080  # Traefik's web UI, enabled by --api
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - my-net
+    depends_on:
+      app:
+        condition: service_healthy
+
+volumes:
+  db-postgres:
+    driver: local
+
+networks:
+  my-net:
