@@ -1,0 +1,21 @@
+name: dagger
+
+on: 
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                python-version: '3.x'
+            - name: Install Dagger
+              run: pip install dagger-io
+            - name: Run Dagger
+              working-directory: ./web-app
+              run: dagger run python ci/main.py
