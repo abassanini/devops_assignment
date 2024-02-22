@@ -15,7 +15,7 @@ jobs:
               with:
                 python-version: '3.10'
             - name: Install Dagger
-              run: pip install dagger-io
+              run: pip install dagger-io petname
             - name: Install Dagger CLI
               run: cd /usr/local && { curl -L https://dl.dagger.io/dagger/install.sh | sh; cd -; }
             - name: Run Dagger
