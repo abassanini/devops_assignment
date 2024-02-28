@@ -27,7 +27,7 @@ async def test():
             # run lint
             .with_exec(["flake8", "--statistics"])
             # run tests
-            .with_exec(["python", "-m", "pytest", "-v"])
+            .with_exec(["python", "-m", "pytest", "-v", "--cov"])
         )
 
         # execute

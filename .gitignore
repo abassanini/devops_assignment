@@ -7,7 +7,7 @@ debug*
 .DS_Store
 *db
 *pyc
-test
+local_test
 .pass
 *backup
 .terraform

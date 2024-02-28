@@ -45,6 +45,7 @@ pydantic_core==2.16.1
 pyflakes==3.2.0
 Pygments==2.17.2
 pytest==8.0.0
+pytest-cov==4.1.0
 python-dotenv==1.0.1
 python-multipart==0.0.6
 PyYAML==6.0.1

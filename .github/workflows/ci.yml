@@ -1,4 +1,5 @@
 name: dagger
+run-name: dagger-ci
 
 on: 
     push:
@@ -21,6 +22,3 @@ jobs:
             - name: Run Dagger
               working-directory: ./web-app
               run: dagger run python ci/main.py
-            - name: Setup tmate session
-              if: success() || failure()
-              uses: mxschmitt/action-tmate@v3
