@@ -31,7 +31,7 @@ jobs:
                 oldv=$(awk -F\" '{print $2}' version.py)
                 echo "oldv: $oldv"
                 git fetch --tags
-                docker run --rm -it -v $PWD:/app -w /app treeder/bump --filename version.py
+                docker run --rm -t -v $PWD:/app -w /app treeder/bump --filename version.py
                 newv=$(awk -F\" '{print $2}' version.py)
                 echo "newv: $newv"
                 git tag -a "v$newv" -m "version $newv"
