@@ -22,3 +22,17 @@ jobs:
             - name: Run Dagger
               working-directory: ./web-app
               run: dagger run python ci/main.py
+            - uses: actions/checkout@v4
+            - name: Bump version
+              working-directory: ./web-app/counter
+              run: |
+                git config --global user.email "github+actions@gmail.com"
+                git config --global user.name "Actions"
+                oldv=$(awk -F\" '{print $2}' version.py)
+                echo "oldv: $oldv"
+                git fetch --tags
+                docker run --rm -it -v $PWD:/app -w /app treeder/bump --filename version.py
+                newv=$(awk -F\" '{print $2}' version.py)
+                echo "newv: $newv"
+                git tag -a "v$newv" -m "version $newv"
+                git push --follow-tags
