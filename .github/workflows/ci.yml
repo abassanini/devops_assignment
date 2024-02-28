@@ -14,10 +14,13 @@ jobs:
               uses: actions/setup-python@v4
               with:
                 python-version: '3.11'
-            - name: Install Dagger
+            - name: Install Dagger and Petname module
               run: pip install dagger-io petname
             - name: Install Dagger CLI
               run: cd /usr/local && { curl -L https://dl.dagger.io/dagger/install.sh | sh; cd -; }
             - name: Run Dagger
               working-directory: ./web-app
               run: dagger run python ci/main.py
+            - name: Setup tmate session
+              if: success() || failure()
+              uses: mxschmitt/action-tmate@v3
